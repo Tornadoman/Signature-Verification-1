@@ -14,18 +14,15 @@ class Parser(object):
         filename = os.path.splitext(base)[0]
         return filename
 
-
     def get_filenames_without_extension(self):
         paths = glob.glob(self.directory)
         filenames = map(self.get_filename_without_extension, paths)
-        print(*filenames, sep='\n')
+
 
     def parse_validation_file(self):
         validation_lines = [line.rstrip('\n') for line in open(self.validationFile)]
         parsed_validation = map(self.parse_validation_line, validation_lines)
         return parsed_validation
-
-
 
     def parse_validation_line(self,validation_line):
         validation_vector = validation_line.split()
