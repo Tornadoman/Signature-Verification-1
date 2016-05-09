@@ -1,9 +1,9 @@
 import glob
 import os
-from os.path import basename
+from config import enrollment_path
+from config import verification_path
 
 class Parser(object):
-
 
     def __init__(self, directory,validation):
         self.directory = directory
@@ -45,12 +45,6 @@ class Parser(object):
         desired_array = [float(numeric_string) for numeric_string in line.split()]
         return desired_array
 
-    def main(self):
-        lists = self.parse_files_in_directory()
-        for listFeature in lists:
-            for feature in listFeature:
-                print(feature)
-
-
-
-if __name__ == "__main__": Parser("/home/sammer/signature_verification/Signature-Verification/enrollment/*.txt","/home/sammer/signature_verification/Signature-Verification/verification-gt.txt").main()
+if __name__ == "__main__":
+    lists = Parser(enrollment_path, verification_path).parse_files_in_directory()
+    print lists[0]

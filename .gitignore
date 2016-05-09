@@ -6,6 +6,9 @@ __pycache__/
 # C extensions
 *.so
 
+# config files
+/config.py
+
 # Distribution / packaging
 .Python
 env/
@@ -84,18 +87,16 @@ ENV/
 # Spyder project settings
 .spyderproject
 
-# Rope project settings
-.ropeproject
-
 # Mac OSX
 .DS_Store
 
+# Folders
+data/
+scikit-learn/
+
 # PyCharm
-/.idea
+.idea/
 
-# Files
-*.jpg
-*.png
-
-#svg.path library
-svg.path-2.1.1/
+# PyDev
+.project
+.pydevproject
