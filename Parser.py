@@ -17,7 +17,7 @@ class Parser(object):
     def get_filenames_without_extension(self):
         paths = glob.glob(self.directory)
         filenames = map(self.get_filename_without_extension, paths)
-
+        return filenames
 
     def parse_validation_file(self):
         validation_lines = [line.rstrip('\n') for line in open(self.validationFile)]
