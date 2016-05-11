@@ -1,2 +1,5 @@
-enrollment_path="/home/masus/Workspace/Signature-Verification/enrollment/*.txt"
-verification_path="/home/masus/Workspace/Signature-Verification/verification-gt.txt"
+import os
+
+dir = os.path.dirname(__file__)
+enrollment_path = os.path.join(dir , 'enrollment/*.txt')
+verification_path = os.path.join(dir , 'verification-gt.txt')

@@ -2,7 +2,7 @@ import glob
 import os
 from config import enrollment_path
 from config import verification_path
-
+from signature import Signature
 class Parser(object):
 
     def __init__(self, directory,validation):
@@ -34,17 +34,22 @@ class Parser(object):
     def parse_files_in_directory(self):
         paths = glob.glob(self.directory)
         parsed_file = map(self.parse_file, paths)
+
         return parsed_file
 
     def parse_file(self, path):
         lines = [line.rstrip('\n') for line in open(path)]
         measurements = map(self.parse_line_to_measurements, lines)
-        return measurements
+        filename = self.get_filename_without_extension(path)
+        signature = Signature(measurements, filename)
+
+        return signature
 
     def parse_line_to_measurements(self, line):
         desired_array = [float(numeric_string) for numeric_string in line.split()]
         return desired_array
 
 if __name__ == "__main__":
-    lists = Parser(enrollment_path, verification_path).parse_files_in_directory()
-    print lists[0]
+    signatureList = Parser(enrollment_path, verification_path).parse_files_in_directory()
+    for list in signatureList:
+        print(list.get_number())

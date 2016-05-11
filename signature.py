@@ -7,11 +7,11 @@ class Signature:
     def get_user(self):
         return self.filename[0:2]
 
-    def isGenuine(self):
+    def is_genuine(self):
         if self.filename[4] == 'g':
             return True
         else:
             return False
 
-    def getNumber(self):
+    def get_number(self):
         return self.filename[-3:]
