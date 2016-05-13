@@ -5,18 +5,14 @@ import matplotlib.pyplot as plt
 
 
 class DTW(object):
-
-    def __init__(self, keyword):
-        self.keyword = keyword
-        self.keyword_features_vector = features.calculate_image_features(keyword)
+    def __init__(self, keyword_features):
+        self.keyword_features_vector = keyword_features
         self.cost_fix_hv = numpy.sqrt(len(self.keyword_features_vector[0]) * 100 ** 2) / 3
         self.diagonal_margin = 50
 
-    # Masis method to calculate the cost (probably better)
-    def calculate_cost_and_matrix(self, compare_vector):
-        compare_vector = features.calculate_image_features(compare_vector)
-        max_i, max_j = len(self.keyword_features_vector), len(compare_vector)
-        matrix = [[None] * (max_j) for i in range(max_i)]
+    def calculate_cost_and_matrix(self, compare_features_vector):
+        max_i, max_j = len(self.keyword_features_vector), len(compare_features_vector)
+        matrix = [[None] * max_j for i in range(max_i)]
         diagonal_factor = float(max_j) / float(max_i)
 
         for i in range(max_i):
@@ -28,10 +24,10 @@ class DTW(object):
                     continue
 
                 lowest_cost = []
-                if i - 1 >= 0 and j - 1 >= 0\
+                if i - 1 >= 0 and j - 1 >= 0 \
                         and not matrix[i - 1][j - 1] is None:  # cost that is defined by going diagonal
                     v1 = numpy.array(self.keyword_features_vector[i])
-                    v2 = numpy.array(compare_vector[j])
+                    v2 = numpy.array(compare_features_vector[j])
                     lowest_cost.append(matrix[i - 1][j - 1] + numpy.linalg.norm(v1 - v2))
                 if j - 1 >= 0 and not matrix[i][j - 1] is None:  # cost that is defined by going from left to right
                     lowest_cost.append(matrix[i][j - 1] + self.cost_fix_hv)
@@ -40,42 +36,6 @@ class DTW(object):
 
                 matrix[i][j] = min(lowest_cost)
         return (matrix[max_i - 1][max_j - 1] / (self.cost_fix_hv * (max_i + max_j))), matrix
-
-    # Pascis method to calculate the cost
-    def calculate_cost_pasci(self, compare_vector):
-        # v1 = i, v2 = j
-        compare_vector = features.calculate_image_features(compare_vector)
-        v1, v2 = self.__transform_features__(compare_vector), \
-                 self.__transform_features__(self.keyword_features_vector)
-
-        cost = []
-        for i in range(min(len(v1), len(v2))):
-            cost.append(self.calculate_cost_and_matrix_pasci(v1[i], v2[i])[0])
-        return sum(cost), None
-
-    def calculate_cost_and_matrix_pasci(self, v1, v2):
-        max_i, max_j = len(v1) + 1, len(v2) + 1
-        matrix = [[0] * max_j for i in range(max_i)]
-        cost_fix_hv = (sum(v1) + sum(v2)) / (len(v1) + len(v2)) / 2
-
-        if cost_fix_hv < 1:
-            cost_fix_hv = 1
-
-        for i in range(max_i):
-            for j in range(max_j):
-                if i == 0 and j == 0:
-                    continue
-
-                lowest_cost = []
-                if i - 1 >= 0 and j - 1 >= 0:  # cost that is defined by going diagonal
-                    lowest_cost.append(matrix[i - 1][j - 1] + abs(v1[i - 1] - v2[j - 1]))
-                if j - 1 >= 0:  # cost that is defined by going from left to right
-                    lowest_cost.append(matrix[i][j - 1] + cost_fix_hv)
-                if i - 1 >= 0:  # cost that is defined by going from top to bottom
-                    lowest_cost.append(matrix[i - 1][j] + cost_fix_hv)
-
-                matrix[i][j] = min(lowest_cost)
-        return matrix[max_i - 1][max_j - 1], matrix
 
     # Methods to visualise the DTW Vector
     @staticmethod
@@ -87,7 +47,7 @@ class DTW(object):
 
     @staticmethod
     def backtracking_path(matrix):
-        noNones = lambda fn: lambda *args : fn(a for a in args if a is not None)
+        no_nones = lambda fn: lambda *args: fn(a for a in args if a is not None)
 
         i, j = len(matrix) - 1, len(matrix[0]) - 1
         path = [[j, i]]
@@ -98,9 +58,9 @@ class DTW(object):
                 i -= 1
             else:
 
-                if matrix[i - 1][j] == noNones(min)(matrix[i - 1][j - 1], matrix[i - 1][j], matrix[i][j - 1]):
+                if matrix[i - 1][j] == no_nones(min)(matrix[i - 1][j - 1], matrix[i - 1][j], matrix[i][j - 1]):
                     i -= 1
-                elif matrix[i][j - 1] == noNones(min)(matrix[i - 1][j - 1], matrix[i - 1][j], matrix[i][j - 1]):
+                elif matrix[i][j - 1] == no_nones(min)(matrix[i - 1][j - 1], matrix[i - 1][j], matrix[i][j - 1]):
                     j -= 1
                 else:
                     i -= 1
@@ -146,9 +106,10 @@ class DTW(object):
 
         self.plt_output(plt, 'feature_mapping')
 
-    def plt_output(self, plt, name):
+    @staticmethod
+    def plt_output(plt, name):
         plt.title(name)
-        plt.show()                      # shows results in popup
+        plt.show()  # shows results in popup
         # plt.savefig(name + '.png')    # saves results in file system
 
 
