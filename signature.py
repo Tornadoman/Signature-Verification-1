@@ -15,3 +15,6 @@ class Signature:
 
     def get_number(self):
         return self.filename[-3:]
+
+    def __str__(self):
+        return ("%s: < %s >") %(self.filename, str(self.data))

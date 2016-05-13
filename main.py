@@ -5,9 +5,12 @@ This is supposed to be the main script of our application.
 """
 from Parser import Parser
 import time
+import features
 
 from config import enrollment_path
 from config import verification_path
+from config import verification_gt_path
+from DTW import DTW
 from signature import Signature
 
 # timer
@@ -20,8 +23,13 @@ def print_timer(purpose_message=""):
     start_time = time.clock()
 
 """ Reading Data """
-parser = Parser(enrollment_path, verification_path)
-enrollment_list = parser.parse_files_in_directory()
-print enrollment_list[0]
+enrollment = features.calculate_features(Parser.parse_files_in_directory(enrollment_path))
+verification = features.calculate_features(Parser.parse_files_in_directory(verification_path))
+verification_gt = Parser.parse_file(verification_gt_path)
 
-print [[Signature("some data", "filename"), Signature("some data", "filename")],[Signature("some data", "filename"), Signature("some data", "filename")]]
+for template in verification:
+    dtw = DTW(template)
+
+    results = [dtw.calculate_cost_and_matrix(enr) for enr in enrollment]
+
+
