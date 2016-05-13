@@ -1,4 +1,3 @@
-
 class Signature:
     def __init__(self, data, filename):
         self.data = data
@@ -17,4 +16,4 @@ class Signature:
         return self.filename[-3:]
 
     def __str__(self):
-        return ("%s: < %s >") %(self.filename, str(self.data))
+        return ("%s: < %s >") % (self.filename, str(self.data))

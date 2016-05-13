@@ -11,7 +11,6 @@ from config import enrollment_path
 from config import verification_path
 from config import verification_gt_path
 from DTW import DTW
-from signature import Signature
 
 # timer
 start_time = time.clock()

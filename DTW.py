@@ -1,5 +1,4 @@
 import features
-import SvgParser
 import numpy
 
 import matplotlib.pyplot as plt
@@ -156,18 +155,19 @@ class DTW(object):
 # An example that takes the first word and searches in the images for the same word
 # Pictures need to be already cropped.
 if __name__ == "__main__":
-    svg_parser = SvgParser.SvgParser("ground-truth/locations/", "images/", "task/train.txt", "task/valid.txt")
+    pass
+    # svg_parser = SvgParser.SvgParser("ground-truth/locations/", "images/", "task/train.txt", "task/valid.txt")
 
     # 2 words that are equal: (orders)
     # training_keyword = svg_parser.binarize("cropped/train/270_2_out.png", 0.5)
     # training_sample = svg_parser.binarize("cropped/train/270_16_out.png", 0.5)
 
     # 2 words hat are different:
-    training_keyword = svg_parser.binarize("cropped/train/270_4_out.png", 0.5)
-    training_sample = svg_parser.binarize("cropped/train/270_20_out.png", 0.5)
+    # training_keyword = svg_parser.binarize("cropped/train/270_4_out.png", 0.5)
+    # training_sample = svg_parser.binarize("cropped/train/270_20_out.png", 0.5)
 
-    dtw = DTW(training_keyword)
-    result = dtw.calculate_cost_and_matrix(training_sample)
-    print "cost: ", result[0]
+    # dtw = DTW(training_keyword)
+    # result = dtw.calculate_cost_and_matrix(training_sample)
+    # print "cost: ", result[0]
 
-    dtw.plot_matrix_cost(result[1])
+    # dtw.plot_matrix_cost(result[1])

@@ -3,9 +3,10 @@ import os
 from config import enrollment_path
 from config import verification_path
 from signature import Signature
-class Parser(object):
 
-    def __init__(self, directory,validation):
+
+class Parser(object):
+    def __init__(self, directory, validation):
         self.directory = directory
         self.validationFile = validation
 
@@ -24,11 +25,11 @@ class Parser(object):
         parsed_validation = map(self.parse_validation_line, validation_lines)
         return parsed_validation
 
-    def parse_validation_line(self,validation_line):
+    def parse_validation_line(self, validation_line):
         validation_vector = validation_line.split()
         filename_abbreviated = validation_vector[0]
         filename = filename_abbreviated[:4] + 'g-' + filename_abbreviated[4:]
-        genuine_or_fake = validation_vector[1]=='g'
+        genuine_or_fake = validation_vector[1] == 'g'
         return filename, genuine_or_fake
 
     def parse_files_in_directory(self):
@@ -48,6 +49,7 @@ class Parser(object):
     def parse_line_to_measurements(self, line):
         desired_array = [float(numeric_string) for numeric_string in line.split()]
         return desired_array
+
 
 if __name__ == "__main__":
     signatureList = Parser(enrollment_path, verification_path).parse_files_in_directory()
