@@ -11,7 +11,7 @@ def parse_validation_file(validation_path):
 def parse_validation_line( validation_line):
     validation_vector = validation_line.split()
     filename_abbreviated = validation_vector[0]
-    filename = filename_abbreviated[:4] + 'g-' + filename_abbreviated[4:]
+    filename = validation_vector[0]
     genuine_or_fake = validation_vector[1] == 'g'
     return filename, genuine_or_fake
 
