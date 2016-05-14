@@ -1,12 +1,11 @@
-import Parser
-import features
+import matplotlib.pyplot as plt
 import numpy
 
+import Parser
+import features
 from config import enrollment_path
-from config import verification_path
 from config import verification_gt_path
-
-import matplotlib.pyplot as plt
+from config import verification_path
 
 
 class DTW(object):
@@ -121,11 +120,13 @@ class DTW(object):
 def sort_by_name(signature):
     return signature.filename
 
+
 # An example that takes the first word and searches in the images for the same word
 # Pictures need to be already cropped.
 if __name__ == "__main__":
     enrollment = sorted(features.calculate_features(Parser.parse_files_in_directory(enrollment_path)), key=sort_by_name)
-    verification = sorted(features.calculate_features(Parser.parse_files_in_directory(verification_path)), key=sort_by_name)
+    verification = sorted(features.calculate_features(Parser.parse_files_in_directory(verification_path)),
+                          key=sort_by_name)
     verification_gt = Parser.parse_validation_file(verification_gt_path)
 
     dtw = DTW(verification[0])
@@ -133,4 +134,3 @@ if __name__ == "__main__":
     print "cost: ", result[0]
 
     dtw.plot_matrix_cost(result[1])
-

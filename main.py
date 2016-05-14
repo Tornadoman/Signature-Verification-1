@@ -2,12 +2,13 @@
 This is supposed to be the main script of our application.
 """
 import time
-import features
+
 import Parser
-from config import enrollment_path
-from config import verification_path
-from config import verification_gt_path
+import features
 from DTW import DTW
+from config import enrollment_path
+from config import verification_gt_path
+from config import verification_path
 
 # timer
 start_time = time.clock()
