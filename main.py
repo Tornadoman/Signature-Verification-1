@@ -1,5 +1,3 @@
-
-
 """
 This is supposed to be the main script of our application.
 """
@@ -17,15 +15,16 @@ start_time = time.clock()
 
 def print_timer(purpose_message=""):
     global start_time
-    print("%s timer: %ss" % (purpose_message, int(time.clock()-start_time)))
+    print("%s timer: %ss" % (purpose_message, int(time.clock() - start_time)))
     start_time = time.clock()
 
-""" Reading Data """
+
 def sort_by_name(signature):
     return signature.filename
 
-enrollment = sorted(features.calculate_features(Parser.parse_files_in_directory(enrollment_path)), key = sort_by_name)
-verification = sorted(features.calculate_features(Parser.parse_files_in_directory(verification_path)), key = sort_by_name)
+
+enrollment = sorted(features.calculate_features(Parser.parse_files_in_directory(enrollment_path)), key=sort_by_name)
+verification = sorted(features.calculate_features(Parser.parse_files_in_directory(verification_path)), key=sort_by_name)
 verification_gt = Parser.parse_validation_file(verification_gt_path)
 
 print("enrollment names:")
