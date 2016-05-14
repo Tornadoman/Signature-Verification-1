@@ -3,10 +3,9 @@
 """
 This is supposed to be the main script of our application.
 """
-from Parser import Parser
 import time
 import features
-
+import Parser
 from config import enrollment_path
 from config import verification_path
 from config import verification_gt_path
