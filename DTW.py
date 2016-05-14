@@ -83,7 +83,7 @@ class DTW(object):
                     matrix[i][j] = numpy.nan
 
         path = self.backtracking_path(matrix)
-        print path
+        print (path)
         path_x, path_y = [point[0] for point in path], [point[1] for point in path]
         plt.imshow(matrix, interpolation='nearest', cmap='Reds', aspect=.5)
         plt.gca().invert_yaxis()
@@ -102,7 +102,7 @@ class DTW(object):
         path = self.backtracking_path(matrix)
         for [map_x, map_y] in path:
             plt.plot([map_x, map_y], [v1[map_x - 1], v2[map_y - 1]], 'r')
-            print map_x, v1[map_x - 1], ":", map_y, v2[map_y - 1]
+            print (map_x, v1[map_x - 1], ":", map_y, v2[map_y - 1])
 
         self.plt_output(plt, 'feature_mapping')
 

@@ -3,7 +3,19 @@ import os
 
 from signature import Signature
 
-def get_filename_without_extension( path):
+def parse_validation_file(validation_path):
+    validation_lines = [line.rstrip('\n') for line in open(validation_path)]
+    parsed_validation = map(parse_validation_line, validation_lines)
+    return parsed_validation
+
+def parse_validation_line( validation_line):
+    validation_vector = validation_line.split()
+    filename_abbreviated = validation_vector[0]
+    filename = filename_abbreviated[:4] + 'g-' + filename_abbreviated[4:]
+    genuine_or_fake = validation_vector[1] == 'g'
+    return filename, genuine_or_fake
+
+def get_filename_without_extension(path):
     base = os.path.basename(path)
     filename = os.path.splitext(base)[0]
     return filename
@@ -21,7 +33,7 @@ def parse_file(path):
 
     return signature
 
-def parse_line_to_measurements(self, line):
+def parse_line_to_measurements(line):
     desired_array = [float(numeric_string) for numeric_string in line.split()]
     return desired_array
 
