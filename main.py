@@ -30,9 +30,7 @@ def apply_dtw(template):
     dtw = DTW(template)
 
     results = [dtw.calculate_cost_and_matrix(enr) for enr in enrollment]
-    min_cost = sorted(results)[0]
-    print("results for template %s complete. Top result: %s" % (template.filename, max))
-    template.cost = min_cost[0]
+    template.cost = min(results)
 
 
 """ Parsing """
@@ -47,10 +45,10 @@ print_timer("parsing")
 """ Applying DTW """
 
 # adjust verification set size here
-for template in verification[:10]:
+print("applying dtw. this might take a while")
+for template in verification:
     apply_dtw(template)
 
 print_timer("DTW")
 
-for template in verification[:10]:
-    print("%s, cost: %s" %(template.filename, template.cost))
+print sorted([[verification[i].cost, verification_gt[i]] for i in range(len(verification))])

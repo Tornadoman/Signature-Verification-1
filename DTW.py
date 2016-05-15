@@ -39,7 +39,7 @@ class DTW(object):
                     lowest_cost.append(matrix[i - 1][j] + self.cost_fix_hv)
 
                 matrix[i][j] = min(lowest_cost)
-        return (matrix[max_i - 1][max_j - 1] / (self.cost_fix_hv * (max_i + max_j))), matrix
+        return matrix[max_i - 1][max_j - 1] / (self.cost_fix_hv * (max_i + max_j))
 
     # Methods to visualise the DTW Vector
     @staticmethod
