@@ -1,17 +1,21 @@
-import features
+import matplotlib.pyplot as plt
 import numpy
 
-import matplotlib.pyplot as plt
+import Parser
+import features
+from config import enrollment_path
+from config import verification_gt_path
+from config import verification_path
 
 
 class DTW(object):
-    def __init__(self, keyword_features):
-        self.keyword_features_vector = keyword_features
-        self.cost_fix_hv = numpy.sqrt(len(self.keyword_features_vector[0]) * 100 ** 2) / 3
+    def __init__(self, signature):
+        self.signature = signature
+        self.cost_fix_hv = numpy.sqrt(len(self.signature.data[0]) * 100 ** 2) / 3
         self.diagonal_margin = 50
 
-    def calculate_cost_and_matrix(self, compare_features_vector):
-        max_i, max_j = len(self.keyword_features_vector), len(compare_features_vector)
+    def calculate_cost_and_matrix(self, compare_signature):
+        max_i, max_j = len(self.signature.data[0]), len(compare_signature.data[0])
         matrix = [[None] * max_j for i in range(max_i)]
         diagonal_factor = float(max_j) / float(max_i)
 
@@ -26,8 +30,8 @@ class DTW(object):
                 lowest_cost = []
                 if i - 1 >= 0 and j - 1 >= 0 \
                         and not matrix[i - 1][j - 1] is None:  # cost that is defined by going diagonal
-                    v1 = numpy.array(self.keyword_features_vector[i])
-                    v2 = numpy.array(compare_features_vector[j])
+                    v1 = numpy.array(self.signature.data[i])
+                    v2 = numpy.array(compare_signature.data[j])
                     lowest_cost.append(matrix[i - 1][j - 1] + numpy.linalg.norm(v1 - v2))
                 if j - 1 >= 0 and not matrix[i][j - 1] is None:  # cost that is defined by going from left to right
                     lowest_cost.append(matrix[i][j - 1] + self.cost_fix_hv)
@@ -113,22 +117,20 @@ class DTW(object):
         # plt.savefig(name + '.png')    # saves results in file system
 
 
+def sort_by_name(signature):
+    return signature.filename
+
+
 # An example that takes the first word and searches in the images for the same word
 # Pictures need to be already cropped.
 if __name__ == "__main__":
-    pass
-    # svg_parser = SvgParser.SvgParser("ground-truth/locations/", "images/", "task/train.txt", "task/valid.txt")
+    enrollment = sorted(features.calculate_features(Parser.parse_files_in_directory(enrollment_path)), key=sort_by_name)
+    verification = sorted(features.calculate_features(Parser.parse_files_in_directory(verification_path)),
+                          key=sort_by_name)
+    verification_gt = Parser.parse_validation_file(verification_gt_path)
 
-    # 2 words that are equal: (orders)
-    # training_keyword = svg_parser.binarize("cropped/train/270_2_out.png", 0.5)
-    # training_sample = svg_parser.binarize("cropped/train/270_16_out.png", 0.5)
+    dtw = DTW(verification[0])
+    result = dtw.calculate_cost_and_matrix(verification[1])
+    print "cost: ", result[0]
 
-    # 2 words hat are different:
-    # training_keyword = svg_parser.binarize("cropped/train/270_4_out.png", 0.5)
-    # training_sample = svg_parser.binarize("cropped/train/270_20_out.png", 0.5)
-
-    # dtw = DTW(training_keyword)
-    # result = dtw.calculate_cost_and_matrix(training_sample)
-    # print "cost: ", result[0]
-
-    # dtw.plot_matrix_cost(result[1])
+    dtw.plot_matrix_cost(result[1])
