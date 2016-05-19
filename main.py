@@ -26,8 +26,6 @@ verification = features.calculate_features(Parser.parse_files_in_directory(verif
 verification_gt = Parser.parse_validation_file(verification_gt_path)
 
 
-
-
 for template in verification:
     dtw = DTW(template)
 
