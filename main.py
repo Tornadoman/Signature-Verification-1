@@ -21,6 +21,7 @@ def print_timer(purpose_message=""):
     print("%s timer: %ss" % (purpose_message, int(time.clock() - start_time)))
     start_time = time.clock()
 
+
 def sort_by_name(signature):
     return signature.filename
 
@@ -53,4 +54,4 @@ for template in verification[:10]:
 print_timer("DTW")
 
 for template in verification[:10]:
-    print("%s, cost: %s" %(template.filename, template.cost))
+    print("%s, cost: %s" % (template.filename, template.cost))
