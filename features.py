@@ -6,13 +6,15 @@ def calculate_features(signatures):
 
 
 def calculate_signature_feature(signature):
-    signature.set_features([x_coordinates(signature), y_coordinates(signature), calculate_x_velocity(signature),
-                            calculate_y_velocity(signature), pressure(signature)])
+    #return signature
+    feature_functions = (x_coordinates, y_coordinates, calculate_x_velocity, calculate_y_velocity, pressure)
+    signature.data = zip(*[feature_function(signature) for feature_function in feature_functions])
     return signature
 
 
 def calculate_x_velocity(signature):
     return numpy.diff([x[0] for x in signature.data])
+
 
 
 def calculate_y_velocity(signature):

@@ -54,4 +54,4 @@ for template in verification[:10]:
 print_timer("DTW")
 
 for template in verification[:10]:
-    print("%s, cost: %s" % (template.filename, template.cost))
+    print("%s, cost: %s %s" % (template.filename, template.cost, template.is_genuine()))
