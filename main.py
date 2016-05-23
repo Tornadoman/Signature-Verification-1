@@ -41,10 +41,9 @@ def apply_dtw(template):
 
 enrollment = sorted(features.calculate_features(Parser.parse_files_in_directory(enrollment_path)), key=sort_by_name)
 verification = sorted(features.calculate_features(Parser.parse_files_in_directory(verification_path)), key=sort_by_name)
-verification_gt = Parser.parse_validation_file(verification_gt_path)
+verification_gt = dict(Parser.parse_validation_file(verification_gt_path))
 print_timer("parsing")
-
-
+print(verification_gt)
 """ Applying DTW """
 
 # adjust verification set size here
@@ -54,4 +53,4 @@ for template in verification[:10]:
 print_timer("DTW")
 
 for template in verification[:10]:
-    print("%s, cost: %s %s" % (template.filename, template.cost, template.is_genuine()))
+    print("%s, cost: %s %s" % (template.filename, template.cost, verification_gt[template.filename]))
