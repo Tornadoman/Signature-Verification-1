@@ -131,6 +131,6 @@ if __name__ == "__main__":
 
     dtw = DTW(verification[0])
     result = dtw.calculate_cost_and_matrix(verification[1])
-    print "cost: ", result[0]
+    print("cost: ", result[0])
 
     dtw.plot_matrix_cost(result[1])

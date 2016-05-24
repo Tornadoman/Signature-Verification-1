@@ -12,9 +12,8 @@ from config import verification_path
 
 # timer
 start_time = time.clock()
-global output
-output = ''
-
+global output_list
+output_list = []
 
 """ Helper Functions"""
 
@@ -33,10 +32,17 @@ def apply_dtw(template):
 
     dtw = DTW(template)
 
+    output = [template.get_user()]
+    for enr in enrollment:
+        if enr.get_user() == template.get_user():
+            output.append(enr.filename)
+            output.append(dtw.calculate_cost_and_matrix(enr))
+
+    global output_list
+    output_list.append(output)
+
     results = [dtw.calculate_cost_and_matrix(enr) for enr in enrollment if enr.get_user() == template.get_user()]
     template.cost = min(results)
-    global output
-    output += template.get_user() + str(results)
 
 
 """ Parsing """
@@ -62,4 +68,4 @@ print_timer("DTW")
 # dev debug print
 # print sorted([[verification[i].cost, verification_gt[verification[i].filename]] for i in range(len(verification))])
 
-print output
+print(output_list)
