@@ -20,8 +20,5 @@ class Signature:
         return self.filename[-3:]
 
     def __str__(self):
-        return ("%s: < %s >") % (self.filename, str(self.is_genuine()))
-
-
-
+        return ("%s: %s") % (self.filename, str(self.cost))
 

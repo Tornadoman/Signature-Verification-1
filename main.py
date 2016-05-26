@@ -13,8 +13,6 @@ import csv
 
 # timer
 start_time = time.clock()
-global output_list
-output_list = []
 
 """ Helper Functions"""
 
@@ -28,19 +26,13 @@ def print_timer(purpose_message=""):
 def sort_by_name(signature):
     return signature.filename
 
+def sort_by_cost(signature):
+    return signature.cost
+
 
 def apply_dtw(template):
 
     dtw = DTW(template)
-
-    output = [template.get_user()]
-    for enr in enrollment:
-        if enr.get_user() == template.get_user():
-            output.append(enr.filename)
-            output.append(dtw.calculate_cost_and_matrix(enr))
-
-    global output_list
-    output_list.append(output)
 
     results = [dtw.calculate_cost_and_matrix(enr) for enr in enrollment if enr.get_user() == template.get_user()]
     template.cost = min(results)
@@ -58,19 +50,19 @@ print_timer("parsing")
 
 """ Applying DTW """
 
-
-# adjust verification set size here
+output = [["0%s" % (i+31)] for i in range(70)]
 print("applying dtw. this might take a while")
 for template in verification:
     apply_dtw(template)
+    output[int(template.get_user())-31].append(template)
+
+output = [[column[0]] + (sorted(column[1:], key=sort_by_cost)) for column in output]
 
 print_timer("DTW")
 
 # dev debug print
 # print sorted([[verification[i].cost, verification_gt[verification[i].filename]] for i in range(len(verification))])
 
-print(output_list)
-
 with open("output.csv", "w") as f:
     writer = csv.writer(f)
-    writer.writerows(output_list)
+    writer.writerows(output)
