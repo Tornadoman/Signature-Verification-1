@@ -56,7 +56,14 @@ for template in verification:
     apply_dtw(template)
     output[int(template.get_user())-31].append(template)
 
-output = [[column[0]] + (sorted(column[1:], key=sort_by_cost)) for column in output]
+def prep_column(column):
+    sorted_column = [column[0]]
+    for signature in (sorted(column[1:], key=sort_by_cost)):
+        sorted_column.append(signature.filename)
+        sorted_column.append(signature.cost)
+    return sorted_column
+
+output = [prep_column(column) for column in output]
 
 print_timer("DTW")
 
