@@ -9,6 +9,7 @@ from DTW import DTW
 from config import enrollment_path
 from config import verification_gt_path
 from config import verification_path
+import csv
 
 # timer
 start_time = time.clock()
@@ -69,3 +70,7 @@ print_timer("DTW")
 # print sorted([[verification[i].cost, verification_gt[verification[i].filename]] for i in range(len(verification))])
 
 print(output_list)
+
+with open("output.csv", "w") as f:
+    writer = csv.writer(f)
+    writer.writerows(output_list)
